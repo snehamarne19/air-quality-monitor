@@ -1,0 +1,1415 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AQI Analytics</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
+
+
+<style>
+
+:root {
+
+    --primary-color:#0f4c5c;
+    --accent-green:#2a9d8f;
+    --accent-yellow:#e9c46a;
+    --accent-orange:#f4a261;
+    --accent-red:#e76f51;
+
+    --glass-bg:rgba(255,255,255,0.75);
+    --glass-border:rgba(255,255,255,0.5);
+
+    --shadow:
+    0 10px 30px rgba(31,38,135,0.1);
+}
+
+
+* {
+
+    margin:0;
+    padding:0;
+
+    box-sizing:border-box;
+
+    font-family:'Poppins',sans-serif;
+
+}
+
+
+body {
+
+    background:
+    linear-gradient(
+        135deg,
+        #e0f7fa 0%,
+        #80cbc4 100%
+    );
+
+    min-height:100vh;
+
+    padding-bottom:60px;
+
+}
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+
+    position:sticky;
+
+    top:0;
+
+    background:
+    rgba(255,255,255,0.95);
+
+    backdrop-filter:blur(12px);
+
+    padding:15px 5%;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    box-shadow:
+    0 4px 15px rgba(0,0,0,0.05);
+
+    z-index:100;
+
+}
+
+
+.logo {
+
+    font-size:1.5rem;
+
+    font-weight:700;
+
+    color:var(--primary-color);
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+
+.logo i {
+
+    color:var(--accent-green);
+
+}
+
+
+.nav-links {
+
+    display:flex;
+
+    gap:30px;
+
+    list-style:none;
+
+}
+
+
+.nav-links a {
+
+    text-decoration:none;
+
+    color:var(--primary-color);
+
+    font-weight:500;
+
+    transition:.3s;
+
+    position:relative;
+
+}
+
+
+.nav-links a::after {
+
+    content:"";
+
+    position:absolute;
+
+    left:50%;
+
+    bottom:-5px;
+
+    width:0;
+
+    height:2px;
+
+    background:var(--accent-green);
+
+    transform:translateX(-50%);
+
+    transition:.3s;
+
+}
+
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+
+    width:100%;
+
+}
+
+
+.nav-links a:hover,
+.nav-links a.active {
+
+    color:var(--accent-green);
+
+}
+
+
+.nav-spacer {
+
+    width:120px;
+
+    visibility:hidden;
+
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header-title {
+
+    text-align:center;
+
+    padding:40px 0 20px;
+
+    color:var(--primary-color);
+
+    animation:
+    fadeDown .8s ease;
+
+}
+
+
+.header-title h1 {
+
+    font-size:2.2rem;
+
+    margin-bottom:10px;
+
+}
+
+
+.header-title p {
+
+    font-size:1rem;
+
+    color:#52796f;
+
+}
+
+
+#selectedCity {
+
+    color:var(--accent-green);
+
+    font-weight:600;
+
+}
+
+
+@keyframes fadeDown {
+
+    from {
+
+        opacity:0;
+
+        transform:translateY(-25px);
+
+    }
+
+    to {
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+/* =========================
+   GRID
+========================= */
+
+.charts-container {
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:25px;
+
+    padding:20px 5%;
+
+    max-width:1400px;
+
+    margin:0 auto;
+
+    align-items:stretch;
+
+}
+
+
+/* =========================
+   CARDS
+========================= */
+
+.chart-card {
+
+    background:
+    var(--glass-bg);
+
+    backdrop-filter:blur(10px);
+
+    padding:20px;
+
+    border-radius:20px;
+
+    box-shadow:
+    var(--shadow);
+
+    border:
+    1px solid var(--glass-border);
+
+    transition:
+    transform .35s ease,
+    box-shadow .35s ease;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:flex-start;
+
+    animation:
+    cardAnimation .7s ease both;
+
+}
+
+
+.chart-card:nth-child(1) {
+    animation-delay:.1s;
+}
+
+.chart-card:nth-child(2) {
+    animation-delay:.2s;
+}
+
+.chart-card:nth-child(3) {
+    animation-delay:.3s;
+}
+
+.chart-card:nth-child(4) {
+    animation-delay:.4s;
+}
+
+.chart-card:nth-child(5) {
+    animation-delay:.5s;
+}
+
+.chart-card:nth-child(6) {
+    animation-delay:.6s;
+}
+
+
+@keyframes cardAnimation {
+
+    from {
+
+        opacity:0;
+
+        transform:
+        translateY(30px)
+        scale(.97);
+
+    }
+
+    to {
+
+        opacity:1;
+
+        transform:
+        translateY(0)
+        scale(1);
+
+    }
+
+}
+
+
+.chart-card:hover {
+
+    transform:
+    translateY(-7px);
+
+    box-shadow:
+    0 18px 40px
+    rgba(15,76,92,.16);
+
+    background:
+    rgba(255,255,255,.90);
+
+}
+
+
+.chart-card h3 {
+
+    margin-bottom:15px;
+
+    color:var(--primary-color);
+
+    text-align:center;
+
+    font-size:1.1rem;
+
+    font-weight:600;
+
+}
+
+
+/* =========================
+   CHART
+========================= */
+
+.chart-wrapper {
+
+    position:relative;
+
+    height:300px;
+
+    width:100%;
+
+}
+
+
+/* =========================
+   CITY INFO
+========================= */
+
+.city-info {
+
+    width:90%;
+
+    max-width:1400px;
+
+    margin:
+    0 auto 5px;
+
+    text-align:center;
+
+    color:#52796f;
+
+    font-size:.85rem;
+
+}
+
+
+.city-info span {
+
+    color:var(--accent-green);
+
+    font-weight:600;
+
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1100px) {
+
+    .charts-container {
+
+        grid-template-columns:
+        repeat(2,1fr);
+
+    }
+
+}
+
+
+@media(max-width:768px) {
+
+    .charts-container {
+
+        grid-template-columns:1fr;
+
+    }
+
+    .chart-wrapper {
+
+        height:300px;
+
+    }
+
+    .nav-spacer {
+
+        display:none;
+
+    }
+
+    .nav-links {
+
+        display:none;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+
+        <i class="fa-solid fa-leaf"></i>
+
+        AirQuality<span
+        style="color:#e36414">
+        .AI
+        </span>
+
+    </div>
+
+
+    <ul class="nav-links">
+
+        <li>
+            <a href="login.html">
+                Login
+            </a>
+        </li>
+
+        <li>
+            <a href="index.html">
+                Home
+            </a>
+        </li>
+
+        <li>
+            <a href="city.html">
+                City AQI
+            </a>
+        </li>
+
+        <li>
+            <a href="charts.html"
+               class="active">
+                Charts
+            </a>
+        </li>
+
+        <li>
+            <a href="prevention.html">
+                Prevention
+            </a>
+        </li>
+
+        <li>
+            <a href="contact.html">
+                Contact us
+            </a>
+        </li>
+
+    </ul>
+
+
+    <div class="nav-spacer"></div>
+
+</nav>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<div class="header-title">
+
+    <h1>
+
+        <i class="fa-solid fa-chart-pie"></i>
+
+        Analytics Dashboard
+
+    </h1>
+
+
+    <p>
+
+        Air quality analysis for
+        <span id="selectedCity">
+            your selected city
+        </span>
+
+    </p>
+
+</div>
+
+
+<div class="city-info">
+
+    Live data from your latest
+    City AQI search
+
+</div>
+
+
+<!-- =========================
+     CHARTS
+========================= -->
+
+<div class="charts-container">
+
+
+    <!-- 1 -->
+
+    <div class="chart-card">
+
+        <h3>
+            Pollution Sources
+        </h3>
+
+        <div class="chart-wrapper">
+
+            <canvas id="sourceChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- 2 -->
+
+    <div class="chart-card">
+
+        <h3>
+            <span id="cityChartTitle">
+                City
+            </span>
+            AQI
+        </h3>
+
+        <div class="chart-wrapper">
+
+            <canvas id="cityChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- 3 -->
+
+    <div class="chart-card">
+
+        <h3>
+            PM2.5 Analysis
+        </h3>
+
+        <div class="chart-wrapper">
+
+            <canvas id="trendChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- 4 -->
+
+    <div class="chart-card">
+
+        <h3>
+            Pollutant Components
+        </h3>
+
+        <div class="chart-wrapper">
+
+            <canvas id="radarChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- 5 -->
+
+    <div class="chart-card">
+
+        <h3>
+            Pollution Intensity
+        </h3>
+
+        <div class="chart-wrapper">
+
+            <canvas id="seasonalChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- 6 -->
+
+    <div class="chart-card">
+
+        <h3>
+            Air Quality Levels
+        </h3>
+
+        <div class="chart-wrapper">
+
+            <canvas id="healthChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+/* =====================================================
+   GET DATA FROM CITY AQI PAGE
+===================================================== */
+
+const savedData =
+JSON.parse(
+    localStorage.getItem(
+        "airQualityData"
+    )
+);
+
+
+/* =====================================================
+   CHECK DATA
+===================================================== */
+
+if (!savedData) {
+
+    document.getElementById(
+        "selectedCity"
+    ).innerText =
+    "No city selected";
+
+}
+
+
+/* =====================================================
+   CITY INFORMATION
+===================================================== */
+
+if (savedData) {
+
+    document.getElementById(
+        "selectedCity"
+    ).innerText =
+    savedData.city;
+
+
+    document.getElementById(
+        "cityChartTitle"
+    ).innerText =
+    savedData.city;
+
+}
+
+
+/* =====================================================
+   CHART DEFAULTS
+===================================================== */
+
+Chart.defaults.font.family =
+"'Poppins', sans-serif";
+
+Chart.defaults.color =
+"#264653";
+
+
+const commonOptions = {
+
+    responsive:true,
+
+    maintainAspectRatio:false,
+
+    animation:{
+
+        duration:1500,
+
+        easing:"easeOutQuart"
+
+    },
+
+    plugins:{
+
+        legend:{
+
+            labels:{
+
+                usePointStyle:true,
+
+                boxWidth:10,
+
+                font:{
+                    size:11
+                }
+
+            }
+
+        }
+
+    }
+
+};
+
+
+/* =====================================================
+   DATA
+===================================================== */
+
+let city =
+savedData ?
+savedData.city :
+"City";
+
+
+let aqi =
+savedData ?
+Number(savedData.aqi) :
+0;
+
+
+let pm25 =
+savedData ?
+Number(savedData.pm25) :
+0;
+
+
+let pm10 =
+savedData ?
+Number(savedData.pm10) :
+0;
+
+
+let o3 =
+savedData ?
+Number(savedData.o3) :
+0;
+
+
+let no2 =
+savedData ?
+Number(savedData.no2) :
+0;
+
+
+let so2 =
+savedData ?
+Number(savedData.so2) :
+0;
+
+
+let co =
+savedData ?
+Number(savedData.co) :
+0;
+
+
+/* =====================================================
+   1. POLLUTION SOURCES
+===================================================== */
+
+new Chart(
+
+    document.getElementById(
+        "sourceChart"
+    ),
+
+    {
+
+        type:"doughnut",
+
+        data:{
+
+            labels:[
+                "PM2.5",
+                "PM10",
+                "O3",
+                "NO2"
+            ],
+
+            datasets:[{
+
+                data:[
+                    pm25,
+                    pm10,
+                    o3,
+                    no2
+                ],
+
+                backgroundColor:[
+
+                    "#e76f51",
+                    "#2a9d8f",
+                    "#e9c46a",
+                    "#f4a261"
+
+                ],
+
+                borderWidth:0
+
+            }]
+
+        },
+
+        options:{
+
+            ...commonOptions,
+
+            plugins:{
+
+                legend:{
+
+                    position:"right"
+
+                }
+
+            }
+
+        }
+
+    }
+
+);
+
+
+/* =====================================================
+   2. CITY AQI
+===================================================== */
+
+let aqiColor =
+"#2a9d8f";
+
+
+if(aqi >= 4) {
+
+    aqiColor =
+    "#d62828";
+
+}
+
+else if(aqi >= 3) {
+
+    aqiColor =
+    "#f4a261";
+
+}
+
+else if(aqi >= 2) {
+
+    aqiColor =
+    "#e9c46a";
+
+}
+
+
+new Chart(
+
+    document.getElementById(
+        "cityChart"
+    ),
+
+    {
+
+        type:"bar",
+
+        data:{
+
+            labels:[
+                city
+            ],
+
+            datasets:[{
+
+                label:"Current AQI",
+
+                data:[
+                    aqi
+                ],
+
+                backgroundColor:[
+                    aqiColor
+                ],
+
+                borderRadius:8
+
+            }]
+
+        },
+
+        options:{
+
+            ...commonOptions,
+
+            scales:{
+
+                y:{
+
+                    beginAtZero:true,
+
+                    max:5,
+
+                    ticks:{
+                        stepSize:1
+                    },
+
+                    grid:{
+                        display:false
+                    }
+
+                },
+
+                x:{
+
+                    grid:{
+                        display:false
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+);
+
+
+/* =====================================================
+   3. PM2.5
+===================================================== */
+
+new Chart(
+
+    document.getElementById(
+        "trendChart"
+    ),
+
+    {
+
+        type:"line",
+
+        data:{
+
+            labels:[
+                "PM2.5"
+            ],
+
+            datasets:[{
+
+                label:"µg/m³",
+
+                data:[
+                    pm25
+                ],
+
+                borderColor:
+                "#0f4c5c",
+
+                backgroundColor:
+                "rgba(15,76,92,.12)",
+
+                fill:true,
+
+                tension:.4,
+
+                pointRadius:7,
+
+                pointHoverRadius:10
+
+            }]
+
+        },
+
+        options:{
+
+            ...commonOptions,
+
+            plugins:{
+
+                legend:{
+                    display:false
+                }
+
+            },
+
+            scales:{
+
+                y:{
+
+                    beginAtZero:true,
+
+                    grid:{
+                        display:false
+                    }
+
+                },
+
+                x:{
+
+                    grid:{
+                        display:false
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+);
+
+
+/* =====================================================
+   4. RADAR
+===================================================== */
+
+new Chart(
+
+    document.getElementById(
+        "radarChart"
+    ),
+
+    {
+
+        type:"radar",
+
+        data:{
+
+            labels:[
+                "PM2.5",
+                "PM10",
+                "O3",
+                "NO2",
+                "SO2",
+                "CO"
+            ],
+
+            datasets:[{
+
+                label:
+                city +
+                " Current",
+
+                data:[
+
+                    pm25,
+                    pm10,
+                    o3,
+                    no2,
+                    so2,
+                    co
+
+                ],
+
+                backgroundColor:
+                "rgba(42,157,143,.20)",
+
+                borderColor:
+                "#2a9d8f",
+
+                pointBackgroundColor:
+                "#2a9d8f",
+
+                pointRadius:4
+
+            }]
+
+        },
+
+        options:{
+
+            ...commonOptions,
+
+            scales:{
+
+                r:{
+
+                    beginAtZero:true,
+
+                    ticks:{
+                        display:false
+                    },
+
+                    grid:{
+                        color:
+                        "rgba(0,0,0,.05)"
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+);
+
+
+/* =====================================================
+   5. POLLUTION INTENSITY
+===================================================== */
+
+new Chart(
+
+    document.getElementById(
+        "seasonalChart"
+    ),
+
+    {
+
+        type:"polarArea",
+
+        data:{
+
+            labels:[
+                "PM2.5",
+                "PM10",
+                "O3",
+                "NO2"
+            ],
+
+            datasets:[{
+
+                data:[
+
+                    pm25,
+                    pm10,
+                    o3,
+                    no2
+
+                ],
+
+                backgroundColor:[
+
+                    "rgba(214,40,40,.65)",
+
+                    "rgba(233,196,106,.65)",
+
+                    "rgba(42,157,143,.65)",
+
+                    "rgba(244,162,97,.65)"
+
+                ],
+
+                borderWidth:1
+
+            }]
+
+        },
+
+        options:{
+
+            ...commonOptions,
+
+            scales:{
+
+                r:{
+
+                    ticks:{
+                        display:false
+                    },
+
+                    grid:{
+                        color:
+                        "rgba(0,0,0,.05)"
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+);
+
+
+/* =====================================================
+   6. AIR QUALITY LEVEL
+===================================================== */
+
+let levelText =
+"Good";
+
+
+if(aqi === 2) {
+
+    levelText =
+    "Fair";
+
+}
+
+else if(aqi === 3) {
+
+    levelText =
+    "Moderate";
+
+}
+
+else if(aqi === 4) {
+
+    levelText =
+    "Poor";
+
+}
+
+else if(aqi === 5) {
+
+    levelText =
+    "Very Poor";
+
+}
+
+
+new Chart(
+
+    document.getElementById(
+        "healthChart"
+    ),
+
+    {
+
+        type:"bar",
+
+        indexAxis:"y",
+
+        data:{
+
+            labels:[
+                levelText
+            ],
+
+            datasets:[{
+
+                label:"AQI Level",
+
+                data:[
+                    aqi
+                ],
+
+                backgroundColor:[
+                    aqiColor
+                ],
+
+                borderRadius:8
+
+            }]
+
+        },
+
+        options:{
+
+            ...commonOptions,
+
+            plugins:{
+
+                legend:{
+                    display:false
+                }
+
+            },
+
+            scales:{
+
+                x:{
+
+                    beginAtZero:true,
+
+                    max:5,
+
+                    ticks:{
+                        stepSize:1
+                    },
+
+                    grid:{
+                        display:false
+                    }
+
+                },
+
+                y:{
+
+                    grid:{
+                        display:false
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+);
+
+</script>
+
+
+</body>
+
+</html>
+

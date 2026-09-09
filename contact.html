@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Air Quality System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #0f4c5c;
+            --accent-green: #2a9d8f;
+            --accent-orange: #e9c46a;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        body {
+            background: linear-gradient(135deg, #e0f7fa 0%, #80cbc4 100%);
+            height: 100vh; /* Force body to be exactly screen height */
+            overflow: hidden; /* Prevent body scroll */
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Particle Background */
+        #particleCanvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* ===== NAVIGATION BAR (Matches Home Page Exactly) ===== */
+        .navbar {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%; /* Matches Home Page Padding */
+            display: flex;
+            justify-content: space-between; /* Matches Home Page Layout */
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .logo { 
+            font-size: 1.5rem; /* Matches Home Page Size */
+            font-weight: 700; 
+            color: var(--primary-color); 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            text-decoration: none; 
+            /* Matches Home Page Styling */
+        }
+        
+        .logo i { color: var(--accent-green); }
+
+        .nav-links { display: flex; gap: 30px; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--primary-color); font-weight: 500; transition: 0.3s; font-size: 0.95rem; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent-green); }
+
+        /* Invisible Spacer mimics button width to keep links centered */
+        .nav-spacer { width: 120px; visibility: hidden; }
+
+        /* ===== REDUCED CARD SIZING ===== */
+        .main-wrapper {
+            position: relative;
+            z-index: 10;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 5%;
+        }
+
+        .contact-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            width: 90%;
+            max-width: 1100px; /* Reduced width for elegance */
+            height: 75vh; /* Occupies 75% of screen height (Not full height) */
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Left Side */
+        .contact-info {
+            flex: 0 0 35%; /* Takes 35% width */
+            background: var(--primary-color);
+            color: white;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .info-header h2 { font-size: 1.5rem; margin-bottom: 8px; }
+        .info-header p { font-size: 0.85rem; opacity: 0.8; line-height: 1.4; }
+
+        .info-details { margin-top: 20px; }
+        
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item i {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .detail-item h4 { font-size: 0.8rem; margin-bottom: 2px; }
+        .detail-item p { font-size: 0.75rem; opacity: 0.8; }
+
+        .social-links { display: flex; gap: 12px; margin-top: auto; }
+        .social-btn {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: rgba(255,255,255,0.2); color: white;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .social-btn:hover { background: var(--accent-green); }
+
+        /* Right Side Form */
+        .contact-form {
+            flex: 1;
+            padding: 30px;
+            background: white;
+            overflow-y: auto; 
+        }
+
+        .form-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.5rem; /* Matches Home Page Style */
+        }
+
+        .form-group { margin-bottom: 12px; position: relative; }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px 12px; 
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            outline: none;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-green);
+            background: #fafffc;
+        }
+
+        textarea.form-control { resize: none; min-height: 60px; } 
+
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-green));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+        .submit-btn:hover { transform: translateY(-2px); }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: white;
+            padding: 15px 25px;
+            border-left: 5px solid var(--accent-green);
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transform: translateX(200%);
+            transition: transform 0.5s ease;
+            z-index: 1000;
+        }
+        .toast.show { transform: translateX(0); }
+
+        /* Mobile Fallback */
+        @media (max-width: 768px) {
+            body { overflow-y: auto; height: auto; }
+            .contact-card { 
+                flex-direction: column; 
+                height: auto; 
+                margin: 20px 0;
+                width: 90%;
+            }
+            .contact-info { padding: 40px 30px; }
+            .contact-form { padding: 40px 30px; }
+            .nav-spacer { display: none; } /* Hide spacer on mobile */
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="particleCanvas"></canvas>
+
+<nav class="navbar">
+    <div class="logo"><i class="fa-solid fa-leaf"></i> AirQuality.AI</div>
+    
+    <ul class="nav-links">
+       <li><a href="login.html">Login</a></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="city.html">City AQI</a></li>
+        <li><a href="charts.html">Charts</a></li>
+        <li><a href="prevention.html">Prevention</a></li>
+         <li><a href="contact.html" class="active">Contact us</a></li>
+    </ul>
+
+    <!-- Spacer on Right (Invisible) -->
+    <div class="nav-spacer"></div>
+</nav>
+
+<div class="main-wrapper">
+    <div class="contact-card">
+        
+        <!-- Left Side -->
+        <div class="contact-info">
+            <div class="info-header">
+                <h2>Let's Talk!</h2>
+                <p>Have questions about air quality data or found a sensor error in your area? Reach out to our support team.</p>
+            </div>
+
+            <div class="info-details">
+                <div class="detail-item">
+                    <i class="fa-solid fa-envelope"></i>
+                    <div><h4>Email Us</h4><p>support@airquality.ai</p></div>
+                </div>
+                <div class="detail-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <div><h4>Call Us</h4><p>+1 (555) 123-4567</p></div>
+                </div>
+                <div class="detail-item">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div><h4>Headquarters</h4><p>101 Green Tech Blvd, Eco City</p></div>
+                </div>
+            </div>
+
+            <div class="social-links">
+                <a href="#" class="social-btn"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" class="social-btn"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="social-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+        </div>
+
+        <!-- Right Side Form -->
+        <div class="contact-form">
+            <h3 class="form-title">Send a Message</h3>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="name" class="form-control" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" class="form-control" placeholder="john@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Your City / Region</label>
+                    <input type="text" id="city" class="form-control" placeholder="e.g., New York" required>
+                </div>
+                <div class="form-group">
+                    <label>Inquiry Type</label>
+                    <select id="inquiry" class="form-control">
+                        <option>Report Data Error</option>
+                        <option>Partnership Inquiry</option>
+                        <option>General Question</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea id="message" class="form-control" placeholder="How can we help you today?" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message <i class="fa-solid fa-paper-plane"></i></button>
+            </form>
+        </div>
+
+    </div>
+
+<div class="toast" id="toast">
+    <i class="fa-solid fa-circle-check" style="color: var(--accent-green); font-size: 1.5rem;"></i>
+    <div><h4 style="margin-bottom: 2px;">Message Sent!</h4><p style="font-size: 0.9rem; color: #666;">We'll get back to you shortly.</p></div>
+</div>
+
+<script>
+    // Particle Logic
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, particles = [];
+    function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize); resize();
+    class Particle {
+        constructor() {
+            this.x = Math.random() * width; this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * 0.5; this.vy = (Math.random() - 0.5) * 0.5;
+            this.size = Math.random() * 3 + 1; this.alpha = Math.random() * 0.5 + 0.1;
+        }
+        update() { this.x += this.vx; this.y += this.vy; if(this.x<0)this.x=width; if(this.x>width)this.x=0; if(this.y<0)this.y=height; if(this.y>height)this.y=0; }
+        draw() { ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fillStyle=`rgba(255,255,255,${this.alpha})`; ctx.fill(); }
+    }
+    for(let i=0;i<50;i++) particles.push(new Particle());
+    function animate() { ctx.clearRect(0,0,width,height); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animate); }
+    animate();
+
+    
+    
+</script>
+<script src="contact.js"></script>
+</body>
+</html>

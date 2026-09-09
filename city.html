@@ -1,0 +1,2219 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>City AQI - AirQuality.AI</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
+
+<style>
+
+/* =========================
+   BASIC SETTINGS
+========================= */
+
+:root {
+    --primary-color: #0f4c5c;
+    --secondary-color: #e36414;
+    --accent-green: #2a9d8f;
+    --light-green: #72d6c7;
+    --text-dark: #264653;
+    --text-light: #6b8083;
+
+    --glass-bg: rgba(255,255,255,0.82);
+
+    --shadow:
+    0 15px 40px rgba(15,76,92,0.12);
+}
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+html {
+    scroll-behavior:smooth;
+}
+
+body {
+
+    min-height:100vh;
+
+    background:
+    linear-gradient(
+        135deg,
+        #e0f7fa,
+        #80cbc4,
+        #e8f8f7,
+        #b2dfdb
+    );
+
+    background-size:400% 400%;
+
+    animation:
+    backgroundAnimation 15s ease infinite;
+
+    color:var(--text-dark);
+
+    overflow-x:hidden;
+}
+
+
+/* =========================
+   BACKGROUND ANIMATION
+========================= */
+
+@keyframes backgroundAnimation {
+
+    0% {
+        background-position:0% 50%;
+    }
+
+    50% {
+        background-position:100% 50%;
+    }
+
+    100% {
+        background-position:0% 50%;
+    }
+}
+
+
+/* Floating circles */
+
+body::before,
+body::after {
+
+    content:"";
+
+    position:fixed;
+
+    border-radius:50%;
+
+    pointer-events:none;
+
+    z-index:-1;
+}
+
+body::before {
+
+    width:350px;
+    height:350px;
+
+    background:
+    rgba(255,255,255,0.18);
+
+    top:100px;
+    left:-150px;
+
+    animation:
+    floatingCircle 10s ease-in-out infinite;
+}
+
+body::after {
+
+    width:300px;
+    height:300px;
+
+    background:
+    rgba(42,157,143,0.10);
+
+    right:-120px;
+    bottom:100px;
+
+    animation:
+    floatingCircle2 12s ease-in-out infinite;
+}
+
+
+@keyframes floatingCircle {
+
+    0%,100% {
+        transform:
+        translate(0,0);
+    }
+
+    50% {
+        transform:
+        translate(80px,60px);
+    }
+}
+
+
+@keyframes floatingCircle2 {
+
+    0%,100% {
+        transform:
+        translate(0,0);
+    }
+
+    50% {
+        transform:
+        translate(-70px,-50px);
+    }
+}
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+
+    position:sticky;
+
+    top:0;
+
+    z-index:1000;
+
+    background:
+    rgba(255,255,255,0.92);
+
+    backdrop-filter:blur(15px);
+
+    padding:
+    15px 5%;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    box-shadow:
+    0 5px 20px rgba(0,0,0,0.06);
+
+    animation:
+    navbarAnimation .8s ease;
+}
+
+
+@keyframes navbarAnimation {
+
+    from {
+        opacity:0;
+        transform:translateY(-30px);
+    }
+
+    to {
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+
+/* LOGO */
+
+.logo {
+
+    font-size:1.5rem;
+
+    font-weight:700;
+
+    color:var(--primary-color);
+
+    display:flex;
+
+    align-items:center;
+
+    gap:9px;
+
+    transition:.3s;
+}
+
+.logo:hover {
+    transform:scale(1.04);
+}
+
+.logo i {
+
+    color:var(--accent-green);
+
+    animation:
+    leafAnimation 3s ease-in-out infinite;
+}
+
+
+@keyframes leafAnimation {
+
+    0%,100% {
+        transform:rotate(0deg);
+    }
+
+    50% {
+        transform:
+        rotate(12deg)
+        scale(1.1);
+    }
+}
+
+
+/* NAVIGATION */
+
+.nav-links {
+
+    display:flex;
+
+    gap:28px;
+
+    list-style:none;
+}
+
+.nav-links a {
+
+    text-decoration:none;
+
+    color:var(--text-dark);
+
+    font-size:.92rem;
+
+    font-weight:500;
+
+    position:relative;
+
+    padding:5px 0;
+
+    transition:.3s;
+}
+
+.nav-links a::after {
+
+    content:"";
+
+    position:absolute;
+
+    width:0;
+
+    height:2px;
+
+    left:50%;
+
+    bottom:0;
+
+    background:var(--accent-green);
+
+    transform:
+    translateX(-50%);
+
+    transition:.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+
+    color:var(--accent-green);
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+
+    width:100%;
+}
+
+
+/* NAV BUTTON */
+
+.nav-button {
+
+    text-decoration:none;
+
+    background:
+    linear-gradient(
+        135deg,
+        var(--primary-color),
+        #176878
+    );
+
+    color:white;
+
+    padding:
+    10px 22px;
+
+    border-radius:50px;
+
+    font-size:.85rem;
+
+    font-weight:600;
+
+    transition:.3s;
+
+    box-shadow:
+    0 6px 18px
+    rgba(15,76,92,.20);
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+.nav-button:hover {
+
+    transform:
+    translateY(-3px);
+
+    box-shadow:
+    0 10px 25px
+    rgba(42,157,143,.25);
+
+    background:
+    var(--accent-green);
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.main {
+
+    min-height:
+    calc(100vh - 70px);
+
+    padding:
+    55px 20px 70px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+}
+
+
+/* =========================
+   HEADING
+========================= */
+
+.heading {
+
+    text-align:center;
+
+    max-width:700px;
+
+    margin-bottom:30px;
+
+    animation:
+    headingAnimation 1s ease;
+}
+
+
+@keyframes headingAnimation {
+
+    from {
+        opacity:0;
+        transform:
+        translateY(35px);
+    }
+
+    to {
+        opacity:1;
+        transform:
+        translateY(0);
+    }
+}
+
+
+/* LIVE BADGE */
+
+.small-title {
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:
+    7px 15px;
+
+    border-radius:30px;
+
+    background:
+    rgba(42,157,143,.12);
+
+    color:var(--accent-green);
+
+    font-size:.75rem;
+
+    font-weight:600;
+
+    margin-bottom:15px;
+
+    animation:
+    badgeAnimation 2s ease-in-out infinite;
+}
+
+
+.small-title i {
+
+    font-size:.55rem;
+
+    animation:
+    livePulse 1.5s infinite;
+}
+
+
+@keyframes livePulse {
+
+    0%,100% {
+        opacity:1;
+        transform:scale(1);
+    }
+
+    50% {
+        opacity:.3;
+        transform:scale(.7);
+    }
+}
+
+
+@keyframes badgeAnimation {
+
+    0%,100% {
+        box-shadow:
+        0 0 0 rgba(42,157,143,0);
+    }
+
+    50% {
+        box-shadow:
+        0 0 20px rgba(42,157,143,.15);
+    }
+}
+
+
+/* HEADING TEXT */
+
+.heading h1 {
+
+    font-size:
+    clamp(2rem,4vw,3.1rem);
+
+    line-height:1.2;
+
+    color:var(--primary-color);
+
+    margin-bottom:12px;
+
+    font-weight:700;
+}
+
+.heading h1 span {
+
+    color:var(--accent-green);
+}
+
+.heading p {
+
+    color:var(--text-light);
+
+    font-size:.95rem;
+
+    line-height:1.7;
+
+    max-width:600px;
+
+    margin:auto;
+}
+
+
+/* =========================
+   SEARCH BOX
+========================= */
+
+.search-section {
+
+    width:100%;
+
+    max-width:700px;
+
+    margin-bottom:45px;
+
+    animation:
+    searchAnimation 1s ease .2s both;
+}
+
+
+@keyframes searchAnimation {
+
+    from {
+        opacity:0;
+        transform:
+        translateY(30px)
+        scale(.97);
+    }
+
+    to {
+        opacity:1;
+        transform:
+        translateY(0)
+        scale(1);
+    }
+}
+
+
+.search-label {
+
+    display:block;
+
+    margin:
+    0 0 9px 8px;
+
+    font-size:.84rem;
+
+    font-weight:600;
+
+    color:var(--text-dark);
+}
+
+
+.search-box {
+
+    width:100%;
+
+    display:flex;
+
+    align-items:center;
+
+    padding:8px;
+
+    background:
+    rgba(255,255,255,.95);
+
+    border:
+    1px solid
+    rgba(42,157,143,.15);
+
+    border-radius:18px;
+
+    box-shadow:
+    0 15px 35px
+    rgba(15,76,92,.10);
+
+    transition:.4s;
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+
+.search-box::before {
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-100%;
+
+    width:60%;
+
+    height:100%;
+
+    background:
+    linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.7),
+        transparent
+    );
+
+    transform:skewX(-20deg);
+
+    animation:
+    searchShine 5s infinite;
+}
+
+
+@keyframes searchShine {
+
+    0% {
+        left:-100%;
+    }
+
+    40%,100% {
+        left:130%;
+    }
+}
+
+
+.search-box:focus-within {
+
+    transform:
+    translateY(-3px);
+
+    border-color:
+    rgba(42,157,143,.45);
+
+    box-shadow:
+    0 18px 45px
+    rgba(42,157,143,.20);
+}
+
+
+.search-icon {
+
+    width:48px;
+    height:48px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:var(--accent-green);
+
+    font-size:1.1rem;
+
+    position:relative;
+
+    z-index:2;
+
+    animation:
+    locationAnimation 3s ease-in-out infinite;
+}
+
+
+@keyframes locationAnimation {
+
+    0%,100% {
+        transform:translateY(0);
+    }
+
+    50% {
+        transform:translateY(-3px);
+    }
+}
+
+
+.search-box input {
+
+    flex:1;
+
+    border:none;
+
+    outline:none;
+
+    background:transparent;
+
+    color:var(--text-dark);
+
+    font-size:.92rem;
+
+    padding:
+    12px 8px;
+
+    position:relative;
+
+    z-index:2;
+}
+
+
+.search-box input::placeholder {
+
+    color:#9aaeb0;
+}
+
+
+.search-btn {
+
+    border:none;
+
+    outline:none;
+
+    cursor:pointer;
+
+    color:white;
+
+    background:
+    linear-gradient(
+        135deg,
+        var(--primary-color),
+        #176878
+    );
+
+    padding:
+    13px 24px;
+
+    border-radius:13px;
+
+    font-size:.86rem;
+
+    font-weight:600;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    transition:.35s;
+
+    z-index:2;
+}
+
+
+.search-btn::before {
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-100%;
+
+    width:60%;
+
+    height:100%;
+
+    background:
+    linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.35),
+        transparent
+    );
+
+    transform:skewX(-20deg);
+
+    transition:.5s;
+}
+
+
+.search-btn:hover::before {
+
+    left:130%;
+}
+
+
+.search-btn:hover {
+
+    transform:
+    translateY(-3px)
+    scale(1.02);
+
+    background:
+    linear-gradient(
+        135deg,
+        var(--accent-green),
+        #45bcae
+    );
+
+    box-shadow:
+    0 10px 25px
+    rgba(42,157,143,.30);
+}
+
+
+.search-btn:active {
+
+    transform:
+    scale(.97);
+}
+
+
+.search-hint {
+
+    margin:
+    9px 8px 0;
+
+    color:#789092;
+
+    font-size:.72rem;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+}
+
+.search-hint i {
+
+    color:var(--accent-green);
+
+    animation:
+    infoAnimation 2s infinite;
+}
+
+
+@keyframes infoAnimation {
+
+    0%,100% {
+        opacity:.6;
+    }
+
+    50% {
+        opacity:1;
+    }
+}
+
+
+/* =========================
+   LOADER
+========================= */
+
+.loader {
+
+    display:none;
+
+    width:38px;
+    height:38px;
+
+    border:
+    3px solid
+    rgba(42,157,143,.15);
+
+    border-top:
+    3px solid
+    var(--accent-green);
+
+    border-right:
+    3px solid
+    var(--accent-green);
+
+    border-radius:50%;
+
+    animation:
+    loaderSpin .7s linear infinite;
+
+    margin-bottom:30px;
+}
+
+
+@keyframes loaderSpin {
+
+    to {
+        transform:rotate(360deg);
+    }
+}
+
+
+/* =========================
+   RESULT CARD
+========================= */
+
+.result-card {
+
+    width:100%;
+
+    max-width:850px;
+
+    background:
+    rgba(255,255,255,.86);
+
+    backdrop-filter:blur(18px);
+
+    border:
+    1px solid
+    rgba(255,255,255,.8);
+
+    border-radius:25px;
+
+    padding:40px;
+
+    box-shadow:
+    var(--shadow);
+
+    position:relative;
+
+    overflow:hidden;
+
+    display:none;
+}
+
+
+.result-card::before {
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:4px;
+
+    background:
+    linear-gradient(
+        90deg,
+        var(--accent-green),
+        #80cbc4,
+        var(--secondary-color),
+        var(--accent-green)
+    );
+
+    background-size:300% 100%;
+
+    animation:
+    topLineAnimation 4s linear infinite;
+}
+
+
+@keyframes topLineAnimation {
+
+    from {
+        background-position:0;
+    }
+
+    to {
+        background-position:300%;
+    }
+}
+
+
+.result-card.show {
+
+    display:block;
+
+    animation:
+    resultAnimation .8s
+    cubic-bezier(.2,.8,.3,1);
+}
+
+
+@keyframes resultAnimation {
+
+    from {
+
+        opacity:0;
+
+        transform:
+        translateY(40px)
+        scale(.95);
+    }
+
+    to {
+
+        opacity:1;
+
+        transform:
+        translateY(0)
+        scale(1);
+    }
+}
+
+
+/* =========================
+   CITY NAME
+========================= */
+
+.city-name {
+
+    text-align:center;
+
+    font-size:1.55rem;
+
+    color:var(--text-dark);
+
+    margin-bottom:25px;
+
+    font-weight:600;
+
+    animation:
+    cityAnimation .7s ease;
+}
+
+
+@keyframes cityAnimation {
+
+    from {
+        opacity:0;
+        transform:translateY(-10px);
+    }
+
+    to {
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+
+.city-name::before {
+
+    content:"\f3c5";
+
+    font-family:
+    "Font Awesome 6 Free";
+
+    font-weight:900;
+
+    color:var(--accent-green);
+
+    margin-right:7px;
+}
+
+
+/* =========================
+   AQI CIRCLE
+========================= */
+
+.aqi-circle {
+
+    width:185px;
+    height:185px;
+
+    border-radius:50%;
+
+    margin:
+    0 auto 22px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    position:relative;
+
+    background:
+    conic-gradient(
+        var(--accent-green) 0%,
+        #e4eeee 0%
+    );
+
+    animation:
+    aqiCircleAnimation 1.2s
+    cubic-bezier(.2,.8,.3,1);
+}
+
+
+@keyframes aqiCircleAnimation {
+
+    from {
+
+        transform:
+        scale(.6)
+        rotate(-90deg);
+
+        opacity:0;
+    }
+
+    to {
+
+        transform:
+        scale(1)
+        rotate(0);
+
+        opacity:1;
+    }
+}
+
+
+.aqi-circle::before {
+
+    content:"";
+
+    position:absolute;
+
+    inset:-7px;
+
+    border-radius:50%;
+
+    border:
+    1px dashed
+    rgba(42,157,143,.35);
+
+    animation:
+    rotateCircle 12s linear infinite;
+}
+
+
+@keyframes rotateCircle {
+
+    to {
+        transform:rotate(360deg);
+    }
+}
+
+
+.aqi-circle .inner {
+
+    position:absolute;
+
+    width:151px;
+    height:151px;
+
+    border-radius:50%;
+
+    background:
+    rgba(255,255,255,.98);
+
+    box-shadow:
+    inset 0 0 20px
+    rgba(15,76,92,.04);
+}
+
+
+.aqi-value {
+
+    position:relative;
+
+    z-index:2;
+
+    font-size:3.3rem;
+
+    font-weight:700;
+
+    color:var(--primary-color);
+
+    animation:
+    numberAnimation .8s ease;
+}
+
+
+@keyframes numberAnimation {
+
+    from {
+        opacity:0;
+        transform:scale(.5);
+    }
+
+    to {
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+
+.aqi-label {
+
+    position:absolute;
+
+    bottom:43px;
+
+    z-index:3;
+
+    font-size:.7rem;
+
+    color:#84999b;
+
+    font-weight:500;
+}
+
+
+/* =========================
+   AQI STATUS
+========================= */
+
+.aqi-status {
+
+    display:table;
+
+    margin:
+    0 auto 32px;
+
+    padding:
+    8px 20px;
+
+    border-radius:50px;
+
+    font-size:.82rem;
+
+    font-weight:600;
+
+    animation:
+    statusAnimation .8s ease .4s both;
+}
+
+
+@keyframes statusAnimation {
+
+    from {
+        opacity:0;
+        transform:
+        translateY(10px)
+        scale(.9);
+    }
+
+    to {
+        opacity:1;
+        transform:
+        translateY(0)
+        scale(1);
+    }
+}
+
+
+/* =========================
+   POLLUTANTS
+========================= */
+
+.pollutants-grid {
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
+    gap:15px;
+}
+
+
+.pollutant-item {
+
+    background:
+    rgba(248,252,252,.95);
+
+    border:
+    1px solid
+    rgba(15,76,92,.06);
+
+    border-radius:17px;
+
+    padding:20px;
+
+    transition:
+    transform .35s,
+    box-shadow .35s;
+
+    position:relative;
+
+    overflow:hidden;
+
+    opacity:0;
+}
+
+
+.result-card.show
+.pollutant-item {
+
+    animation:
+    pollutantAnimation .7s ease forwards;
+}
+
+
+.result-card.show
+.pollutant-item:nth-child(1) {
+    animation-delay:.2s;
+}
+
+.result-card.show
+.pollutant-item:nth-child(2) {
+    animation-delay:.35s;
+}
+
+.result-card.show
+.pollutant-item:nth-child(3) {
+    animation-delay:.5s;
+}
+
+.result-card.show
+.pollutant-item:nth-child(4) {
+    animation-delay:.65s;
+}
+
+
+@keyframes pollutantAnimation {
+
+    from {
+
+        opacity:0;
+
+        transform:
+        translateY(25px);
+    }
+
+    to {
+
+        opacity:1;
+
+        transform:
+        translateY(0);
+    }
+}
+
+
+.pollutant-item::before {
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-120%;
+
+    width:70%;
+
+    height:100%;
+
+    background:
+    linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.8),
+        transparent
+    );
+
+    transform:skewX(-20deg);
+
+    transition:.6s;
+}
+
+
+.pollutant-item:hover::before {
+
+    left:130%;
+}
+
+
+.pollutant-item:hover {
+
+    transform:
+    translateY(-8px);
+
+    box-shadow:
+    0 15px 30px
+    rgba(15,76,92,.12);
+}
+
+
+.pollutant-item h4 {
+
+    color:#819496;
+
+    font-size:.75rem;
+
+    font-weight:500;
+
+    margin-bottom:8px;
+
+    position:relative;
+
+    z-index:2;
+}
+
+
+.pollutant-item h4 i {
+
+    color:var(--accent-green);
+
+    margin-right:5px;
+
+    transition:.3s;
+}
+
+
+.pollutant-item:hover h4 i {
+
+    transform:
+    scale(1.2)
+    rotate(8deg);
+}
+
+
+.pollutant-item p {
+
+    color:var(--text-dark);
+
+    font-size:1rem;
+
+    font-weight:600;
+
+    position:relative;
+
+    z-index:2;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+
+    width:100%;
+
+    background:
+    var(--primary-color);
+
+    color:white;
+
+    text-align:center;
+
+    padding:
+    18px 20px;
+
+    margin-top:auto;
+}
+
+
+footer p {
+
+    font-size:.75rem;
+
+    opacity:.85;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px) {
+
+    .nav-links {
+        display:none;
+    }
+
+    .pollutants-grid {
+        grid-template-columns:
+        repeat(2,1fr);
+    }
+}
+
+
+@media(max-width:600px) {
+
+    .main {
+        padding:
+        40px 15px 55px;
+    }
+
+    .heading h1 {
+        font-size:2rem;
+    }
+
+    .heading p {
+        font-size:.85rem;
+    }
+
+    .search-icon {
+        display:none;
+    }
+
+    .search-box input {
+        font-size:.82rem;
+    }
+
+    .search-btn {
+        padding:
+        12px 16px;
+    }
+
+    .search-btn span {
+        display:none;
+    }
+
+    .result-card {
+        padding:
+        30px 16px;
+    }
+
+    .pollutants-grid {
+        gap:10px;
+    }
+
+    .pollutant-item {
+        padding:
+        15px 12px;
+    }
+
+    .nav-button {
+        display:none;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+
+        <i class="fa-solid fa-leaf"></i>
+
+        AirQuality
+        <span style="color:var(--secondary-color)">
+            .AI
+        </span>
+
+    </div>
+
+
+    <ul class="nav-links">
+
+        <li>
+            <a href="login.html">
+                Login
+            </a>
+        </li>
+
+        <li>
+            <a href="index.html">
+                Home
+            </a>
+        </li>
+
+        <li>
+            <a href="city.html"
+               class="active">
+                City AQI
+            </a>
+        </li>
+
+        <li>
+            <a href="charts.html">
+                Charts
+            </a>
+        </li>
+
+        <li>
+            <a href="prevention.html">
+                Prevention
+            </a>
+        </li>
+
+        <li>
+            <a href="contact.html">
+                Contact us
+            </a>
+        </li>
+
+    </ul>
+
+
+    <a href="charts.html"
+       class="nav-button">
+
+        View Analytics
+
+    </a>
+
+</nav>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="main">
+
+
+    <!-- HEADING -->
+
+    <section class="heading">
+
+        <div class="small-title">
+
+            <i class="fa-solid fa-circle"></i>
+
+            LIVE AIR QUALITY MONITORING
+
+        </div>
+
+
+        <h1>
+
+            Check the air quality
+            <span>in your city</span>
+
+        </h1>
+
+
+        <p>
+
+            Search the city you want to check
+            and get the latest Air Quality Index
+            and pollutant information.
+
+        </p>
+
+    </section>
+
+
+    <!-- SEARCH -->
+
+    <section class="search-section">
+
+        <label class="search-label">
+
+            Search the city you want to check
+
+        </label>
+
+
+        <div class="search-box">
+
+
+            <div class="search-icon">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+            </div>
+
+
+            <input
+                type="text"
+                id="cityInput"
+                placeholder="Enter city name, e.g. Pune, Mumbai or Delhi"
+            >
+
+
+            <button
+                class="search-btn"
+                onclick="getAQI()">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <span>
+                    Check AQI
+                </span>
+
+            </button>
+
+
+        </div>
+
+
+        <div class="search-hint">
+
+            <i class="fa-solid fa-circle-info"></i>
+
+            Enter a city name to view its current air quality.
+
+        </div>
+
+    </section>
+
+
+    <!-- LOADER -->
+
+    <div
+        class="loader"
+        id="loader">
+    </div>
+
+
+    <!-- RESULT CARD -->
+
+    <section
+        class="result-card"
+        id="resultCard">
+
+
+        <h2
+            class="city-name"
+            id="cityName">
+
+            City Name
+
+        </h2>
+
+
+        <!-- AQI -->
+
+        <div
+            class="aqi-circle"
+            id="aqiCircle">
+
+            <div class="inner"></div>
+
+
+            <span
+                class="aqi-value"
+                id="aqiValue">
+
+                0
+
+            </span>
+
+
+            <span class="aqi-label">
+
+                AQI
+
+            </span>
+
+        </div>
+
+
+        <div
+            class="aqi-status"
+            id="aqiStatus">
+
+            Status
+
+        </div>
+
+
+        <!-- POLLUTANTS -->
+
+        <div class="pollutants-grid">
+
+
+            <div class="pollutant-item">
+
+                <h4>
+
+                    <i class="fa-solid fa-smog"></i>
+
+                    PM2.5
+
+                </h4>
+
+                <p id="pm25">
+
+                    -- µg/m³
+
+                </p>
+
+            </div>
+
+
+            <div class="pollutant-item">
+
+                <h4>
+
+                    <i class="fa-solid fa-cloud"></i>
+
+                    PM10
+
+                </h4>
+
+                <p id="pm10">
+
+                    -- µg/m³
+
+                </p>
+
+            </div>
+
+
+            <div class="pollutant-item">
+
+                <h4>
+
+                    <i class="fa-solid fa-sun"></i>
+
+                    O3 (Ozone)
+
+                </h4>
+
+                <p id="o3">
+
+                    -- µg/m³
+
+                </p>
+
+            </div>
+
+
+            <div class="pollutant-item">
+
+                <h4>
+
+                    <i class="fa-solid fa-industry"></i>
+
+                    NO2
+
+                </h4>
+
+                <p id="no2">
+
+                    -- µg/m³
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <p>
+
+        © 2026 AirQuality.AI
+        • Real-time air quality monitoring
+
+    </p>
+
+</footer>
+
+
+<script>
+
+/* =========================
+   OPENWEATHER API
+========================= */
+
+/* =========================
+   GET AQI
+========================= */
+
+async function getAQI() {
+
+    const city =
+    document
+    .getElementById("cityInput")
+    .value
+    .trim();
+
+
+    const loader =
+    document
+    .getElementById("loader");
+
+
+    const resultCard =
+    document
+    .getElementById("resultCard");
+
+
+    if (!city) {
+
+        alert(
+            "Please enter a city name."
+        );
+
+        return;
+
+    }
+
+
+    loader.style.display =
+    "block";
+
+
+    resultCard.classList.remove(
+        "show"
+    );
+
+    resultCard.style.display =
+    "none";
+
+
+    try {
+
+
+        const response = await fetch(`/api/aqi?city=${encodeURIComponent(city)}`);
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            alert(result.message || "Unable to retrieve air-quality data.");
+            return;
+        }
+
+        const cityName = result.city;
+        const data = result.data;
+
+
+        const components =
+        data.components;
+
+
+        const aqi =
+        data.main.aqi;
+
+
+        /* =========================
+           SAVE DATA TO LOCAL STORAGE
+           FOR charts.html
+        ========================= */
+
+        localStorage.setItem(
+            "airQualityData",
+            JSON.stringify({
+
+                city: cityName,
+
+                aqi: aqi,
+
+                pm25: components.pm2_5,
+
+                pm10: components.pm10,
+
+                o3: components.o3,
+
+                no2: components.no2,
+
+                so2: components.so2,
+
+                co: components.co
+
+            })
+        );
+
+
+        /* =========================
+           DISPLAY CITY
+        ========================= */
+
+        document
+        .getElementById("cityName")
+        .innerText =
+        cityName;
+
+
+        /* =========================
+           DISPLAY AQI
+        ========================= */
+
+        document
+        .getElementById("aqiValue")
+        .innerText =
+        aqi;
+
+
+        /* =========================
+           DISPLAY POLLUTANTS
+        ========================= */
+
+        document
+        .getElementById("pm25")
+        .innerText =
+        components.pm2_5 +
+        " µg/m³";
+
+
+        document
+        .getElementById("pm10")
+        .innerText =
+        components.pm10 +
+        " µg/m³";
+
+
+        document
+        .getElementById("o3")
+        .innerText =
+        components.o3 +
+        " µg/m³";
+
+
+        document
+        .getElementById("no2")
+        .innerText =
+        components.no2 +
+        " µg/m³";
+
+
+        /* =========================
+           AQI STATUS
+        ========================= */
+
+        let color =
+        "#2a9d8f";
+
+
+        let statusText =
+        "Good";
+
+
+        if (aqi === 1) {
+
+            color =
+            "#2a9d8f";
+
+            statusText =
+            "Good — Air quality is satisfactory";
+
+        }
+
+        else if (aqi === 2) {
+
+            color =
+            "#e9c46a";
+
+            statusText =
+            "Fair — Air quality is acceptable";
+
+        }
+
+        else if (aqi === 3) {
+
+            color =
+            "#f4a261";
+
+            statusText =
+            "Moderate — Sensitive groups should take care";
+
+        }
+
+        else if (aqi === 4) {
+
+            color =
+            "#e76f51";
+
+            statusText =
+            "Poor — Health effects may occur";
+
+        }
+
+        else if (aqi === 5) {
+
+            color =
+            "#d62828";
+
+            statusText =
+            "Very Poor — Health alert";
+
+        }
+
+
+        /* =========================
+           AQI CIRCLE
+        ========================= */
+
+        const circle =
+        document
+        .getElementById("aqiCircle");
+
+
+        const percentage =
+        (aqi / 5) * 100;
+
+
+        circle.style.background =
+        `conic-gradient(
+            ${color} ${percentage}%,
+            #e4eeee ${percentage}%
+        )`;
+
+
+        document
+        .getElementById("aqiValue")
+        .style.color =
+        color;
+
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        const status =
+        document
+        .getElementById("aqiStatus");
+
+
+        status.innerText =
+        statusText;
+
+
+        status.style.color =
+        color;
+
+
+        status.style.background =
+        `${color}18`;
+
+
+        /* =========================
+           SHOW RESULT
+        ========================= */
+
+        resultCard.style.display =
+        "block";
+
+
+        void resultCard.offsetWidth;
+
+
+        resultCard.classList.add(
+            "show"
+        );
+
+
+        /* =========================
+           SCROLL TO RESULT
+        ========================= */
+
+        setTimeout(() => {
+
+            resultCard.scrollIntoView({
+
+                behavior:"smooth",
+
+                block:"center"
+
+            });
+
+        },100);
+
+
+    }
+
+
+    catch(error) {
+
+        console.error(error);
+
+        alert(
+            "Unable to fetch air quality data. Please try again."
+        );
+
+    }
+
+
+    finally {
+
+        loader.style.display =
+        "none";
+
+    }
+
+}
+
+
+/* =========================
+   ENTER KEY
+========================= */
+
+document
+.getElementById("cityInput")
+.addEventListener(
+    "keypress",
+    function(event) {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            getAQI();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>

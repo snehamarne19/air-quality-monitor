@@ -1,0 +1,2920 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Prevention Guide | AirQuality.AI</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+
+        :root {
+            --primary-color: #0f4c5c;
+            --accent-green: #2a9d8f;
+            --accent-yellow: #e9c46a;
+            --accent-red: #e76f51;
+
+            --glass-bg: rgba(255,255,255,0.72);
+            --glass-border: rgba(255,255,255,0.55);
+
+            --shadow: 0 8px 32px rgba(31,38,135,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at 10% 20%, rgba(255,255,255,0.5), transparent 25%),
+                radial-gradient(circle at 90% 80%, rgba(255,255,255,0.35), transparent 25%),
+                linear-gradient(135deg, #e0f7fa 0%, #80cbc4 100%);
+
+            min-height: 100vh;
+            padding-bottom: 50px;
+            overflow-x: hidden;
+        }
+
+
+        /* =========================================
+           NAVBAR
+        ========================================= */
+
+        .navbar {
+            position: sticky;
+            top: 0;
+
+            background: rgba(255,255,255,0.92);
+
+            backdrop-filter: blur(15px);
+
+            padding: 15px 5%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            box-shadow: 0 3px 20px rgba(0,0,0,0.08);
+
+            z-index: 1000;
+
+            animation: navDown 0.7s ease;
+        }
+
+        @keyframes navDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+
+            color: var(--primary-color);
+
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--accent-green);
+
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+
+            0%,100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-4px) rotate(5deg);
+            }
+        }
+
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+
+            color: var(--primary-color);
+
+            font-weight: 500;
+
+            transition: all 0.3s ease;
+
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: "";
+
+            position: absolute;
+
+            width: 0;
+            height: 2px;
+
+            left: 50%;
+            bottom: -6px;
+
+            background: var(--accent-green);
+
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent-green);
+
+            transform: translateY(-2px);
+        }
+
+
+        .nav-spacer {
+            width: 120px;
+            visibility: hidden;
+        }
+
+
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        .header {
+            text-align: center;
+
+            padding: 55px 20px 35px;
+
+            color: var(--primary-color);
+
+            animation: headerAppear 0.9s ease;
+        }
+
+        @keyframes headerAppear {
+
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        .city-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            background: rgba(255,255,255,0.78);
+
+            padding: 9px 20px;
+
+            border-radius: 50px;
+
+            color: var(--primary-color);
+
+            font-weight: 600;
+
+            margin-bottom: 15px;
+
+            box-shadow:
+                0 6px 20px rgba(15,76,92,0.12);
+
+            animation: cityFloat 3s ease-in-out infinite;
+        }
+
+        .city-badge i {
+            color: var(--accent-green);
+        }
+
+        @keyframes cityFloat {
+
+            0%,100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+
+        .header h1 {
+            font-size: 2.6rem;
+
+            margin-bottom: 10px;
+
+            font-weight: 700;
+        }
+
+
+        .header p {
+            color: #52796f;
+
+            max-width: 650px;
+
+            margin: auto;
+
+            line-height: 1.6;
+        }
+
+
+        /* =========================================
+           AQI STATUS
+        ========================================= */
+
+        .aqi-status {
+
+            margin: 20px auto 0;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            padding: 12px 24px;
+
+            border-radius: 50px;
+
+            background: rgba(255,255,255,0.85);
+
+            box-shadow:
+                0 8px 25px rgba(15,76,92,0.12);
+
+            animation: aqiAppear 1s ease;
+        }
+
+        @keyframes aqiAppear {
+
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+
+        .aqi-status span:first-child {
+            color: #555;
+
+            font-size: 0.9rem;
+        }
+
+
+        .aqi-status strong {
+
+            font-size: 1.5rem;
+
+            color: var(--accent-green);
+
+            min-width: 40px;
+        }
+
+
+        .aqi-status span:last-child {
+
+            font-weight: 600;
+
+            color: var(--primary-color);
+        }
+
+
+        /* =========================================
+           WARNING BANNER
+        ========================================= */
+
+        .warning-banner {
+
+            margin: 0 5% 40px;
+
+            padding: 20px 25px;
+
+            border-radius: 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 20px;
+
+            color: white;
+
+            background:
+                linear-gradient(90deg,#e76f51,#f4a261);
+
+            box-shadow:
+                0 10px 25px rgba(231,111,81,0.25);
+
+            animation:
+                warningSlide 0.9s ease,
+                warningPulse 3s ease-in-out infinite;
+
+            transition: 0.5s;
+        }
+
+        @keyframes warningSlide {
+
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes warningPulse {
+
+            0%,100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+
+        .warning-icon {
+
+            font-size: 2.5rem;
+
+            animation: warningIcon 1.5s infinite;
+        }
+
+        @keyframes warningIcon {
+
+            0%,100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.15);
+            }
+        }
+
+
+        /* =========================================
+           TABS
+        ========================================= */
+
+        .tabs-container {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 15px;
+
+            margin-bottom: 40px;
+
+            flex-wrap: wrap;
+
+            padding: 0 20px;
+        }
+
+
+        .tab-btn {
+
+            background: rgba(255,255,255,0.9);
+
+            border: none;
+
+            padding: 12px 30px;
+
+            border-radius: 50px;
+
+            font-size: 1rem;
+
+            font-weight: 600;
+
+            color: var(--primary-color);
+
+            cursor: pointer;
+
+            box-shadow:
+                0 4px 15px rgba(0,0,0,0.06);
+
+            transition: all 0.35s ease;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+        }
+
+
+        .tab-btn i {
+            transition: 0.3s;
+        }
+
+
+        .tab-btn:hover i {
+            transform: rotate(10deg) scale(1.15);
+        }
+
+
+        .tab-btn:hover,
+        .tab-btn.active {
+
+            background: var(--primary-color);
+
+            color: white;
+
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 10px 25px rgba(15,76,92,0.3);
+        }
+
+
+        /* =========================================
+           CARDS GRID
+        ========================================= */
+
+        .tips-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit,minmax(350px,1fr));
+
+            gap: 30px;
+
+            padding: 0 5%;
+
+            max-width: 1400px;
+
+            margin: auto;
+        }
+
+
+        .tip-card {
+
+            background: var(--glass-bg);
+
+            backdrop-filter: blur(12px);
+
+            border:
+                1px solid var(--glass-border);
+
+            border-radius: 20px;
+
+            padding: 25px;
+
+            box-shadow: var(--shadow);
+
+            cursor: pointer;
+
+            transition:
+                transform 0.35s ease,
+                box-shadow 0.35s ease,
+                background 0.35s ease;
+
+            position: relative;
+
+            overflow: hidden;
+
+            display: none;
+
+            animation: cardIn 0.55s ease forwards;
+        }
+
+
+        .tip-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -100%;
+
+            width: 100%;
+            height: 3px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--accent-green),
+                    #80cbc4,
+                    var(--accent-green)
+                );
+
+            transition: 0.5s;
+        }
+
+
+        .tip-card:hover::before {
+            left: 0;
+        }
+
+
+        .tip-card.active-show {
+
+            display: flex;
+
+            flex-direction: column;
+        }
+
+
+        @keyframes cardIn {
+
+            from {
+                opacity: 0;
+
+                transform:
+                    translateY(25px)
+                    scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+        }
+
+
+        .tip-card:hover {
+
+            transform:
+                translateY(-8px);
+
+            background:
+                rgba(255,255,255,0.92);
+
+            box-shadow:
+                0 18px 40px rgba(31,38,135,0.18);
+        }
+
+
+        /* =========================================
+           CARD ICON
+        ========================================= */
+
+        .icon-header {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 20px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .icon-box {
+
+            width: 60px;
+
+            height: 60px;
+
+            border-radius: 15px;
+
+            background:
+                rgba(42,157,143,0.1);
+
+            color: var(--accent-green);
+
+            font-size: 1.5rem;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            transition:
+                0.4s ease;
+        }
+
+
+        .tip-card:hover .icon-box {
+
+            background:
+                var(--accent-green);
+
+            color: white;
+
+            transform:
+                rotate(-5deg)
+                scale(1.08);
+
+            box-shadow:
+                0 8px 18px
+                rgba(42,157,143,0.3);
+        }
+
+
+        .card-title {
+
+            font-size: 1.2rem;
+
+            font-weight: 600;
+
+            color: var(--primary-color);
+        }
+
+
+        .card-desc-short {
+
+            font-size: 0.95rem;
+
+            color: #555;
+
+            line-height: 1.6;
+
+            margin-bottom: 15px;
+        }
+
+
+        /* =========================================
+           EXPAND PANEL
+        ========================================= */
+
+        .details-panel {
+
+            max-height: 0;
+
+            overflow: hidden;
+
+            transition:
+                max-height 0.45s ease;
+
+            background:
+                rgba(255,255,255,0.55);
+
+            border-radius: 12px;
+        }
+
+
+        .details-content {
+
+            padding: 15px;
+
+            font-size: 0.9rem;
+
+            color: #444;
+
+            border-top:
+                1px dashed #ccc;
+
+            line-height: 1.6;
+        }
+
+
+        .details-content ul {
+
+            padding-left: 20px;
+
+            margin-top: 10px;
+        }
+
+
+        .details-content li {
+
+            margin-bottom: 6px;
+        }
+
+
+        .click-hint {
+
+            font-size: 0.8rem;
+
+            color: var(--accent-green);
+
+            font-weight: 600;
+
+            text-align: right;
+
+            margin-top: 10px;
+        }
+
+
+        .click-hint i {
+
+            transition: 0.3s;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media(max-width:768px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .nav-spacer {
+                display: none;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .warning-banner {
+                margin: 0 20px 30px;
+            }
+
+            .tips-grid {
+                grid-template-columns: 1fr;
+
+                padding: 0 20px;
+            }
+
+            .tab-btn {
+                padding: 10px 18px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     NAVIGATION BAR
+========================================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        <i class="fa-solid fa-shield-virus"></i>
+        AirQuality.AI
+    </div>
+
+
+    <ul class="nav-links">
+
+        <li>
+            <a href="login.html">
+                Login
+            </a>
+        </li>
+
+        <li>
+            <a href="index.html">
+                Home
+            </a>
+        </li>
+
+        <li>
+            <a href="city.html">
+                City AQI
+            </a>
+        </li>
+
+        <li>
+            <a href="charts.html">
+                Charts
+            </a>
+        </li>
+
+        <li>
+            <a href="prevention.html" class="active">
+                Prevention
+            </a>
+        </li>
+
+        <li>
+            <a href="contact.html">
+                Contact us
+            </a>
+        </li>
+
+    </ul>
+
+
+    <div class="nav-spacer"></div>
+
+</nav>
+
+
+
+<!-- =========================================
+     HEADER
+========================================= -->
+
+<div class="header">
+
+    <div class="city-badge">
+
+        <i class="fa-solid fa-location-dot"></i>
+
+        <span id="selectedCity">
+            Your City
+        </span>
+
+    </div>
+
+
+    <h1>
+        Health Protection Guide
+    </h1>
+
+
+    <p id="aqiMessage">
+
+        Personalized air-quality safety
+        recommendations for your selected city.
+
+    </p>
+
+
+    <div class="aqi-status">
+
+        <span>
+            Current AQI
+        </span>
+
+
+        <strong id="currentAQI">
+            --
+        </strong>
+
+
+        <span id="aqiStatusText">
+            Checking...
+        </span>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================
+     WARNING
+========================================= -->
+
+<div class="warning-banner" id="warningBanner">
+
+    <div class="warning-icon">
+
+        <i class="fa-solid fa-triangle-exclamation"></i>
+
+    </div>
+
+
+    <div>
+
+        <h3 id="warningTitle"
+            style="margin-bottom:5px;">
+
+            Air Quality Advisory
+
+        </h3>
+
+
+        <p id="warningText"
+           style="font-size:0.9rem;opacity:0.95;">
+
+            Search for a city to get
+            personalized air-quality
+            prevention advice.
+
+        </p>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================
+     CATEGORY TABS
+========================================= -->
+
+<div class="tabs-container">
+
+    <button class="tab-btn active"
+            onclick="filterTips('indoor',this)">
+
+        <i class="fa-solid fa-house-chimney"></i>
+
+        Indoor
+
+    </button>
+
+
+    <button class="tab-btn"
+            onclick="filterTips('outdoor',this)">
+
+        <i class="fa-solid fa-person-hiking"></i>
+
+        Outdoor
+
+    </button>
+
+
+    <button class="tab-btn"
+            onclick="filterTips('sensitive',this)">
+
+        <i class="fa-solid fa-baby-carriage"></i>
+
+        Kids & Elderly
+
+    </button>
+
+
+    <button class="tab-btn"
+            onclick="filterTips('mask',this)">
+
+        <i class="fa-solid fa-head-side-mask"></i>
+
+        Masks & Gear
+
+    </button>
+
+</div>
+
+
+
+<!-- =========================================
+     TIPS GRID
+========================================= -->
+
+<div class="tips-grid">
+
+
+<!-- =========================================
+     INDOOR
+========================================= -->
+
+<div class="tip-card active-show"
+     data-category="indoor"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-wind"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Air Purifiers
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Use HEPA filtration to reduce fine particles
+        and improve indoor air quality.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                Use a suitable HEPA air purifier in
+                rooms where you spend the most time.
+            </p>
+
+            <ul>
+
+                <li>
+                    Keep the filter maintained according
+                    to the manufacturer's instructions.
+                </li>
+
+                <li>
+                    Keep windows closed when outdoor
+                    pollution is high.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="tip-card active-show"
+     data-category="indoor"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-seedling"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Indoor Plants
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Keep indoor spaces fresh and comfortable
+        with proper ventilation and greenery.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                Indoor plants can improve the appearance
+                and comfort of your living environment.
+            </p>
+
+            <ul>
+
+                <li>
+                    Do not depend on plants as a replacement
+                    for proper air filtration.
+                </li>
+
+                <li>
+                    Keep plants clean and free from mold.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="tip-card active-show"
+     data-category="indoor"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-door-open"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Ventilation Timing
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Ventilate your home when outdoor air quality
+        is relatively better.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                Check the current AQI before opening
+                windows for extended periods.
+            </p>
+
+            <ul>
+
+                <li>
+                    Avoid ventilation during heavy
+                    traffic or pollution peaks.
+                </li>
+
+                <li>
+                    Close windows when outdoor AQI rises.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="tip-card active-show"
+     data-category="indoor"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-broom"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Safe Cleaning
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Reduce indoor dust and avoid unnecessary
+        airborne cleaning products.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                Good cleaning practices can help
+                maintain better indoor air quality.
+            </p>
+
+            <ul>
+
+                <li>
+                    Avoid excessive aerosol sprays.
+                </li>
+
+                <li>
+                    Use a vacuum cleaner where appropriate.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="tip-card active-show"
+     data-category="indoor"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-fire"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Avoid Candles & Incense
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Burning candles and incense can add smoke
+        and particles to indoor air.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                Avoid unnecessary indoor smoke,
+                especially when outdoor AQI is already high.
+            </p>
+
+            <ul>
+
+                <li>
+                    Prefer non-burning alternatives.
+                </li>
+
+                <li>
+                    Keep indoor spaces well ventilated
+                    when appropriate.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="tip-card active-show"
+     data-category="indoor"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-droplet"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Control Humidity
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Maintain comfortable indoor humidity
+        and prevent dampness and mold.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                Excessive indoor moisture can encourage
+                mold growth.
+            </p>
+
+            <ul>
+
+                <li>
+                    Fix leaks and damp areas.
+                </li>
+
+                <li>
+                    Use appropriate ventilation or
+                    dehumidification.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================
+     OUTDOOR
+========================================= -->
+
+<div class="tip-card"
+     data-category="outdoor"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-clock"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Time Your Activities
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Plan outdoor activities when air quality
+        is better and avoid pollution peaks.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                Check the latest AQI before exercising
+                or spending extended time outdoors.
+            </p>
+
+            <ul>
+
+                <li>
+                    Reduce strenuous activity when AQI is high.
+                </li>
+
+                <li>
+                    Prefer cleaner periods of the day.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="tip-card"
+     data-category="outdoor"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-route"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Avoid Traffic Zones
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Choose quieter and greener routes instead
+        of heavily congested roads.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                Traffic can be an important source
+                of outdoor air pollution.
+            </p>
+
+            <ul>
+
+                <li>
+                    Avoid standing close to busy roads.
+                </li>
+
+                <li>
+                    Choose parks or less congested routes
+                    when possible.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="tip-card"
+     data-category="outdoor"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-car"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Car Windows & AC
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Reduce exposure to traffic pollution
+        while travelling.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                During heavy traffic, keeping windows
+                closed can reduce direct exposure.
+            </p>
+
+            <ul>
+
+                <li>
+                    Use vehicle air recirculation when appropriate.
+                </li>
+
+                <li>
+                    Maintain the cabin air filter.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="tip-card"
+     data-category="outdoor"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-map-location-dot"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Smart Route Planning
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Select routes that reduce exposure
+        to busy roads and polluted areas.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                Route selection can help reduce
+                unnecessary exposure to traffic emissions.
+            </p>
+
+            <ul>
+
+                <li>
+                    Prefer less congested roads.
+                </li>
+
+                <li>
+                    Avoid unnecessary time near industrial areas.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="tip-card"
+     data-category="outdoor"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-industry"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Stay Away from Factories
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Avoid unnecessary exposure around industrial
+        pollution sources.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                Industrial areas can have elevated
+                concentrations of certain pollutants.
+            </p>
+
+            <ul>
+
+                <li>
+                    Avoid unnecessary outdoor activity
+                    near emission sources.
+                </li>
+
+                <li>
+                    Follow local air-quality advisories.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="tip-card"
+     data-category="outdoor"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-shirt"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Post-Exposure Care
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Freshen up after spending extended time
+        outdoors during polluted conditions.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                Basic hygiene can help remove dust and
+                particles that settle on clothing and skin.
+            </p>
+
+            <ul>
+
+                <li>
+                    Wash your face after outdoor exposure.
+                </li>
+
+                <li>
+                    Change clothes after prolonged exposure.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================
+     SENSITIVE
+========================================= -->
+
+<div class="tip-card"
+     data-category="sensitive"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-lungs"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Limit Physical Exertion
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Reduce strenuous outdoor activity when
+        pollution levels are elevated.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                Children and older adults may need
+                extra care during poor air-quality periods.
+            </p>
+
+            <ul>
+
+                <li>
+                    Move intense activities indoors
+                    when AQI is high.
+                </li>
+
+                <li>
+                    Monitor symptoms and local advisories.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="tip-card"
+     data-category="sensitive"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-school"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                School & Bus Zones
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Reduce exposure to vehicle exhaust
+        around schools and pickup areas.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                Vehicle exhaust can increase pollution
+                around busy pickup and drop-off zones.
+            </p>
+
+            <ul>
+
+                <li>
+                    Avoid unnecessary idling.
+                </li>
+
+                <li>
+                    Wait away from vehicle exhaust when possible.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="tip-card"
+     data-category="sensitive"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-soap"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Hygiene Protocol
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Wash hands and face after returning
+        from polluted outdoor environments.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                Regular hygiene is useful after
+                prolonged outdoor exposure.
+            </p>
+
+            <ul>
+
+                <li>
+                    Wash hands and face after returning home.
+                </li>
+
+                <li>
+                    Change heavily exposed clothing.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="tip-card"
+     data-category="sensitive"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-briefcase-medical"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Medical Preparedness
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Keep prescribed respiratory medicines
+        accessible if needed.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                People with respiratory conditions
+                should follow their healthcare plan.
+            </p>
+
+            <ul>
+
+                <li>
+                    Keep prescribed medicines available.
+                </li>
+
+                <li>
+                    Seek medical advice for concerning symptoms.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="tip-card"
+     data-category="sensitive"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-baby"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Stroller Safety
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Keep young children away from direct
+        traffic emissions whenever possible.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                Avoid unnecessary stroller exposure
+                directly beside busy roads.
+            </p>
+
+            <ul>
+
+                <li>
+                    Choose quieter walking routes.
+                </li>
+
+                <li>
+                    Reduce outdoor time when AQI is high.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="tip-card"
+     data-category="sensitive"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-apple-whole"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Healthy Lifestyle
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Maintain a balanced diet, hydration,
+        sleep and regular healthy habits.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                A healthy lifestyle supports general
+                wellbeing during periods of poor air quality.
+            </p>
+
+            <ul>
+
+                <li>
+                    Eat a balanced diet.
+                </li>
+
+                <li>
+                    Stay adequately hydrated.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================
+     MASK
+========================================= -->
+
+<div class="tip-card"
+     data-category="mask"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-head-side-mask"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                N95 vs Surgical
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Choose an appropriate particulate-filtering
+        mask when air pollution is high.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                A well-fitting particulate respirator
+                can reduce inhalation of airborne particles.
+            </p>
+
+            <ul>
+
+                <li>
+                    N95-type respirators are designed
+                    to filter fine particles.
+                </li>
+
+                <li>
+                    Fit and correct use are important.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="tip-card"
+     data-category="mask"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-face-smile-beam"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Fit Check
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        A proper seal is important for a
+        particulate respirator to work effectively.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                Gaps around the face can allow polluted
+                air to enter.
+            </p>
+
+            <ul>
+
+                <li>
+                    Adjust the nose area properly.
+                </li>
+
+                <li>
+                    Check for obvious air leakage.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="tip-card"
+     data-category="mask"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-glasses"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Eye Protection
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Protect your eyes from dust, smoke
+        and irritating airborne particles.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                Eye protection may improve comfort
+                during dusty or smoky conditions.
+            </p>
+
+            <ul>
+
+                <li>
+                    Consider protective eyewear when appropriate.
+                </li>
+
+                <li>
+                    Avoid rubbing irritated eyes.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="tip-card"
+     data-category="mask"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-trash-can"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Disposal & Hygiene
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Handle masks carefully and follow
+        appropriate hygiene practices.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                Avoid unnecessary contact with
+                the outside of a used mask.
+            </p>
+
+            <ul>
+
+                <li>
+                    Handle the mask using its straps.
+                </li>
+
+                <li>
+                    Dispose of disposable masks appropriately.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="tip-card"
+     data-category="mask"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-mask-face"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Respirator Selection
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Use respiratory protection appropriate
+        for the type of exposure.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                Different work environments can
+                require different types of respiratory protection.
+            </p>
+
+            <ul>
+
+                <li>
+                    Follow workplace safety requirements.
+                </li>
+
+                <li>
+                    Use properly certified equipment
+                    for the intended hazard.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="tip-card"
+     data-category="mask"
+     onclick="toggleDetails(this)">
+
+    <div class="icon-header">
+
+        <div class="icon-box">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+
+        <div>
+
+            <div class="card-title">
+                Avoid Improvised Masks
+            </div>
+
+            <div class="click-hint">
+                Click to expand
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <p class="card-desc-short">
+        Do not rely on loose scarves or improvised
+        coverings when particulate protection is needed.
+    </p>
+
+
+    <div class="details-panel">
+
+        <div class="details-content">
+
+            <p>
+                Properly designed and fitted respiratory
+                protection provides more reliable filtration.
+            </p>
+
+            <ul>
+
+                <li>
+                    Choose appropriate certified protection.
+                </li>
+
+                <li>
+                    Make sure it fits correctly.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =========================================
+   LOAD SAVED AIR QUALITY DATA
+========================================= */
+
+const savedData =
+    localStorage.getItem("airQualityData");
+
+
+if (savedData) {
+
+    try {
+
+        const airQualityData =
+            JSON.parse(savedData);
+
+
+        const city =
+            airQualityData.city || "Your City";
+
+
+        const aqi =
+            Number(airQualityData.aqi);
+
+
+        document.getElementById("selectedCity")
+            .textContent = city;
+
+
+        if (!isNaN(aqi)) {
+
+            document.getElementById("currentAQI")
+                .textContent = aqi;
+
+
+            updateAQIAdvice(aqi,city);
+
+        } else {
+
+            document.getElementById("currentAQI")
+                .textContent = "--";
+
+        }
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "Unable to read AQI data:",
+            error
+        );
+
+    }
+
+}
+
+else {
+
+    document.getElementById("selectedCity")
+        .textContent = "No City Selected";
+
+
+    document.getElementById("currentAQI")
+        .textContent = "--";
+
+
+    document.getElementById("aqiStatusText")
+        .textContent = "Search a city first";
+
+
+    document.getElementById("aqiMessage")
+        .textContent =
+        "Search for a city to receive personalized prevention recommendations.";
+
+}
+
+
+
+/* =========================================
+   AQI ADVICE
+========================================= */
+
+function updateAQIAdvice(aqi,city) {
+
+    const statusText =
+        document.getElementById("aqiStatusText");
+
+
+    const warningTitle =
+        document.getElementById("warningTitle");
+
+
+    const warningText =
+        document.getElementById("warningText");
+
+
+    const aqiMessage =
+        document.getElementById("aqiMessage");
+
+
+    const warningBanner =
+        document.getElementById("warningBanner");
+
+
+    const currentAQI =
+        document.getElementById("currentAQI");
+
+
+
+    /* GOOD */
+
+    if (aqi <= 50) {
+
+        statusText.textContent =
+            "Good";
+
+
+        currentAQI.style.color =
+            "#2a9d8f";
+
+
+        warningTitle.textContent =
+            "Air Quality is Good";
+
+
+        warningText.textContent =
+            `Air quality in ${city} is currently good. Outdoor activities are generally suitable.`;
+
+
+        aqiMessage.textContent =
+            `Air quality in ${city} is currently good. Enjoy outdoor activities while following normal precautions.`;
+
+
+        warningBanner.style.background =
+            "linear-gradient(90deg,#2a9d8f,#52b788)";
+
+    }
+
+
+    /* MODERATE */
+
+    else if (aqi <= 100) {
+
+        statusText.textContent =
+            "Moderate";
+
+
+        currentAQI.style.color =
+            "#e9c46a";
+
+
+        warningTitle.textContent =
+            "Moderate Air Quality";
+
+
+        warningText.textContent =
+            `Air quality in ${city} is moderate. Sensitive individuals should consider reducing prolonged outdoor exposure.`;
+
+
+        aqiMessage.textContent =
+            `Personalized prevention guidance for ${city} based on the current AQI of ${aqi}.`;
+
+
+        warningBanner.style.background =
+            "linear-gradient(90deg,#e9c46a,#f4a261)";
+
+    }
+
+
+    /* SENSITIVE GROUPS */
+
+    else if (aqi <= 150) {
+
+        statusText.textContent =
+            "Sensitive Groups: Caution";
+
+
+        currentAQI.style.color =
+            "#f4a261";
+
+
+        warningTitle.textContent =
+            "Sensitive Groups: Take Care";
+
+
+        warningText.textContent =
+            `Air quality in ${city} may affect sensitive individuals. Consider reducing prolonged or strenuous outdoor activity.`;
+
+
+        aqiMessage.textContent =
+            `Take extra precautions in ${city}. Consider reducing intense outdoor activities.`;
+
+
+        warningBanner.style.background =
+            "linear-gradient(90deg,#f4a261,#e76f51)";
+
+    }
+
+
+    /* UNHEALTHY */
+
+    else if (aqi <= 200) {
+
+        statusText.textContent =
+            "Unhealthy";
+
+
+        currentAQI.style.color =
+            "#e76f51";
+
+
+        warningTitle.textContent =
+            "High Pollution Alert";
+
+
+        warningText.textContent =
+            `AQI in ${city} is ${aqi}. Reduce prolonged outdoor exposure and consider a well-fitting particulate respirator when appropriate.`;
+
+
+        aqiMessage.textContent =
+            `Air quality in ${city} is unhealthy. Follow the prevention recommendations below.`;
+
+
+        warningBanner.style.background =
+            "linear-gradient(90deg,#e76f51,#d62828)";
+
+    }
+
+
+    /* VERY UNHEALTHY */
+
+    else if (aqi <= 300) {
+
+        statusText.textContent =
+            "Very Unhealthy";
+
+
+        currentAQI.style.color =
+            "#9d0208";
+
+
+        warningTitle.textContent =
+            "Very Unhealthy Air";
+
+
+        warningText.textContent =
+            `AQI in ${city} is ${aqi}. Avoid unnecessary outdoor exposure and keep indoor air as clean as possible.`;
+
+
+        aqiMessage.textContent =
+            `High pollution detected in ${city}. Strong exposure-reduction measures are recommended.`;
+
+
+        warningBanner.style.background =
+            "linear-gradient(90deg,#9d0208,#6a040f)";
+
+    }
+
+
+    /* HAZARDOUS */
+
+    else {
+
+        statusText.textContent =
+            "Hazardous";
+
+
+        currentAQI.style.color =
+            "#370617";
+
+
+        warningTitle.textContent =
+            "Hazardous Air Quality";
+
+
+        warningText.textContent =
+            `AQI in ${city} is ${aqi}. Stay indoors whenever possible and avoid strenuous outdoor activities.`;
+
+
+        aqiMessage.textContent =
+            `Hazardous air quality detected in ${city}. Follow strict exposure-reduction measures.`;
+
+
+        warningBanner.style.background =
+            "linear-gradient(90deg,#370617,#03071e)";
+
+    }
+
+}
+
+
+
+/* =========================================
+   CATEGORY FILTER
+========================================= */
+
+function filterTips(category,btn) {
+
+
+    document
+        .querySelectorAll(".tab-btn")
+        .forEach(button => {
+
+            button.classList.remove("active");
+
+        });
+
+
+    btn.classList.add("active");
+
+
+    const cards =
+        document.querySelectorAll(".tip-card");
+
+
+    cards.forEach(card => {
+
+        card.style.animation = "none";
+
+
+        card.offsetHeight;
+
+
+        if (
+            card.getAttribute("data-category")
+            === category
+        ) {
+
+            card.classList.add("active-show");
+
+
+            card.style.animation =
+                "cardIn 0.55s ease forwards";
+
+        }
+
+        else {
+
+            card.classList.remove("active-show");
+
+
+            const panel =
+                card.querySelector(".details-panel");
+
+
+            panel.style.maxHeight = null;
+
+
+            const hint =
+                card.querySelector(".click-hint");
+
+
+            hint.innerHTML =
+                'Click to expand <i class="fa-solid fa-chevron-down"></i>';
+
+        }
+
+    });
+
+}
+
+
+
+/* =========================================
+   EXPAND / COLLAPSE
+========================================= */
+
+function toggleDetails(card) {
+
+
+    const panel =
+        card.querySelector(".details-panel");
+
+
+    const hint =
+        card.querySelector(".click-hint");
+
+
+    if (panel.style.maxHeight) {
+
+
+        panel.style.maxHeight =
+            null;
+
+
+        hint.innerHTML =
+            'Click to expand <i class="fa-solid fa-chevron-down"></i>';
+
+    }
+
+
+    else {
+
+
+        document
+            .querySelectorAll(".details-panel")
+            .forEach(panel => {
+
+                panel.style.maxHeight = null;
+
+            });
+
+
+        document
+            .querySelectorAll(".click-hint")
+            .forEach(hint => {
+
+                hint.innerHTML =
+                    'Click to expand <i class="fa-solid fa-chevron-down"></i>';
+
+            });
+
+
+        panel.style.maxHeight =
+            panel.scrollHeight + "px";
+
+
+        hint.innerHTML =
+            'Click to collapse <i class="fa-solid fa-chevron-up"></i>';
+
+    }
+
+}
+
+</script>
+
+
+</body>
+</html>

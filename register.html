@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Create Account | AirQuality.AI</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --primary:#0f4c5c;
+    --secondary:#2a9d8f;
+    --light:#e0f7fa;
+    --white:#ffffff;
+    --shadow:0 8px 32px rgba(0,0,0,0.15);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    background:linear-gradient(135deg,#dff6ff,#80cbc4);
+    position:relative;
+}
+
+/* Animated Background */
+.circle{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,0.2);
+    animation:float 8s infinite ease-in-out;
+}
+
+.circle:nth-child(1){
+    width:250px;
+    height:250px;
+    top:-60px;
+    left:-60px;
+}
+
+.circle:nth-child(2){
+    width:180px;
+    height:180px;
+    bottom:-50px;
+    right:-40px;
+    animation-delay:2s;
+}
+
+.circle:nth-child(3){
+    width:120px;
+    height:120px;
+    top:50%;
+    right:10%;
+    animation-delay:4s;
+}
+
+@keyframes float{
+    0%{
+        transform:translateY(0px);
+    }
+
+    50%{
+        transform:translateY(-20px);
+    }
+
+    100%{
+        transform:translateY(0px);
+    }
+}
+
+/* Register Card */
+.container{
+    width:380px;
+    background:rgba(255,255,255,0.88);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,0.4);
+    border-radius:25px;
+    padding:40px 35px;
+    box-shadow:var(--shadow);
+    position:relative;
+    z-index:10;
+    overflow:hidden;
+}
+
+.container::before{
+    content:'';
+    position:absolute;
+    width:150px;
+    height:150px;
+    background:rgba(42,157,143,0.15);
+    border-radius:50%;
+    top:-60px;
+    right:-60px;
+}
+
+/* Logo */
+.logo{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    margin-bottom:25px;
+    color:var(--primary);
+    font-size:1.6rem;
+    font-weight:700;
+}
+
+.logo i{
+    color:var(--secondary);
+}
+
+/* Heading */
+h2{
+    text-align:center;
+    color:var(--primary);
+    margin-bottom:10px;
+    font-size:2rem;
+}
+
+.subtitle{
+    text-align:center;
+    color:#666;
+    font-size:0.9rem;
+    margin-bottom:30px;
+}
+
+/* Input Fields */
+.input-group{
+    position:relative;
+    margin-bottom:20px;
+}
+
+.input-group input{
+    width:100%;
+    padding:14px 15px 14px 50px;
+    border:2px solid #e0e0e0;
+    border-radius:12px;
+    outline:none;
+    font-size:1rem;
+    transition:0.3s;
+    background:white;
+}
+
+.input-group input:focus{
+    border-color:var(--secondary);
+    box-shadow:0 0 0 4px rgba(42,157,143,0.15);
+}
+
+.input-group i{
+    position:absolute;
+    left:18px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#888;
+    transition:0.3s;
+}
+
+.input-group input:focus + i{
+    color:var(--secondary);
+}
+
+/* Button */
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(45deg,var(--primary),var(--secondary));
+    color:white;
+    font-size:1rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+    margin-top:10px;
+    box-shadow:0 5px 15px rgba(42,157,143,0.3);
+}
+
+button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 8px 20px rgba(42,157,143,0.4);
+}
+
+button:active{
+    transform:scale(0.98);
+}
+
+/* Bottom Link */
+.login-link{
+    text-align:center;
+    margin-top:20px;
+    font-size:0.9rem;
+    color:#555;
+}
+
+.login-link a{
+    color:var(--secondary);
+    text-decoration:none;
+    font-weight:600;
+}
+
+.login-link a:hover{
+    text-decoration:underline;
+}
+
+/* Toast Message */
+.toast{
+    position:fixed;
+    top:30px;
+    right:30px;
+    background:white;
+    padding:15px 25px;
+    border-left:5px solid var(--secondary);
+    border-radius:10px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.15);
+    display:flex;
+    align-items:center;
+    gap:12px;
+    transform:translateX(150%);
+    transition:0.5s;
+    z-index:999;
+}
+
+.toast.show{
+    transform:translateX(0);
+}
+
+.toast i{
+    color:var(--secondary);
+    font-size:1.3rem;
+}
+
+.toast h4{
+    color:var(--primary);
+    margin-bottom:2px;
+}
+
+.toast p{
+    font-size:0.85rem;
+    color:#666;
+}
+
+/* Responsive */
+@media(max-width:500px){
+
+    .container{
+        width:90%;
+        padding:35px 25px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Background -->
+<div class="circle"></div>
+<div class="circle"></div>
+<div class="circle"></div>
+
+<!-- Register Card -->
+<div class="container">
+
+    <div class="logo">
+        <i class="fa-solid fa-leaf"></i>
+        AirQuality.AI
+    </div>
+
+    <h2>Create Account</h2>
+
+    <p class="subtitle">
+        Join the smart air monitoring community
+    </p>
+
+    <form id="registerForm">
+
+        <div class="input-group">
+            <input 
+            type="text" 
+            id="username"
+            placeholder="Enter Username" 
+            required>
+
+            <i class="fa-solid fa-user"></i>
+        </div>
+
+        <div class="input-group">
+            <input 
+            type="password" 
+            id="password"
+            placeholder="Enter Password" 
+            required>
+
+            <i class="fa-solid fa-lock"></i>
+        </div>
+
+        <button type="submit">
+            Create Account
+            <i class="fa-solid fa-arrow-right"></i>
+        </button>
+
+    </form>
+
+    <div class="login-link">
+        Already have an account?
+        <a href="login.html">Login</a>
+    </div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+
+    <i class="fa-solid fa-circle-check"></i>
+
+    <div>
+        <h4 id="toastTitle">Success</h4>
+        <p id="toastMsg">Registration Successful</p>
+    </div>
+
+</div>
+
+<script>
+
+const registerForm =
+document.getElementById("registerForm");
+
+const toast =
+document.getElementById("toast");
+
+const toastTitle =
+document.getElementById("toastTitle");
+
+const toastMsg =
+document.getElementById("toastMsg");
+
+registerForm.addEventListener(
+"submit",
+
+async function(e){
+
+    e.preventDefault();
+
+    const username =
+    document.getElementById("username").value;
+
+    const password =
+    document.getElementById("password").value;
+
+    const button =
+    registerForm.querySelector("button");
+
+    const originalText =
+    button.innerHTML;
+
+    // Loading Animation
+    button.innerHTML =
+    '<i class="fa-solid fa-spinner fa-spin"></i> Creating Account...';
+
+    button.disabled = true;
+
+    try{
+
+        const response = await fetch(
+        "http://localhost:5000/register",
+
+        {
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body: JSON.stringify({
+                username,
+                password
+            })
+        });
+
+        const data =
+        await response.json();
+
+        // Toast Message
+        toastTitle.innerText =
+        data.success ? "Success" : "Error";
+
+        toastMsg.innerText =
+        data.message;
+
+        toast.classList.add("show");
+
+        // Redirect to Login Page
+        if(data.success){
+
+            setTimeout(()=>{
+
+                window.location.href =
+                "login.html";
+
+            },2000);
+
+        }
+
+        // Hide Toast
+        setTimeout(()=>{
+
+            toast.classList.remove("show");
+
+        },3000);
+
+    }
+
+    catch(error){
+
+        toastTitle.innerText =
+        "Server Error";
+
+        toastMsg.innerText =
+        "Backend Server Not Running";
+
+        toast.classList.add("show");
+
+        setTimeout(()=>{
+
+            toast.classList.remove("show");
+
+        },3000);
+
+    }
+
+    // Restore Button
+    button.innerHTML =
+    originalText;
+
+    button.disabled = false;
+
+});
+
+</script>
+
+</body>
+</html>
